@@ -22,12 +22,14 @@ import {
 } from 'src/constants/articleProps';
 
 interface IArticleParamsFrom {
-	onApplyFormData: (options: ArticleState) => void;
+	onApplyFormOptions: (options: ArticleState) => void;
 }
 
-export const ArticleParamsForm = ({ onApplyFormData }: IArticleParamsFrom) => {
+export const ArticleParamsForm = ({
+	onApplyFormOptions,
+}: IArticleParamsFrom) => {
 	const modalRef = useRef<HTMLDivElement>(null);
-	const [state, setState] = useState(defaultArticleState);
+	const [formOptions, setFormOptions] = useState(defaultArticleState);
 
 	const { isOpen, onToggleModal } = useModalToggle(modalRef);
 
@@ -37,7 +39,7 @@ export const ArticleParamsForm = ({ onApplyFormData }: IArticleParamsFrom) => {
 	 * @param optionName Ключ поля в объекте состояния.
 	 */
 	const onChange = (options: OptionType, optionName: ArticleStateKey) =>
-		setState((prevState) => ({
+		setFormOptions((prevState) => ({
 			...prevState,
 			[optionName]: options,
 		}));
@@ -48,8 +50,8 @@ export const ArticleParamsForm = ({ onApplyFormData }: IArticleParamsFrom) => {
 	 * к глобальному состоянию.
 	 */
 	const onReset = () => {
-		setState(defaultArticleState);
-		onApplyFormData(defaultArticleState);
+		setFormOptions(defaultArticleState);
+		onApplyFormOptions(defaultArticleState);
 	};
 
 	/**
@@ -59,7 +61,7 @@ export const ArticleParamsForm = ({ onApplyFormData }: IArticleParamsFrom) => {
 	 */
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		onApplyFormData(state);
+		onApplyFormOptions(formOptions);
 	};
 
 	return (
@@ -73,33 +75,33 @@ export const ArticleParamsForm = ({ onApplyFormData }: IArticleParamsFrom) => {
 						Задайте параметры
 					</Text>
 					<Select
-						selected={state.fontFamilyOption}
+						selected={formOptions.fontFamilyOption}
 						onChange={(options) => onChange(options, 'fontFamilyOption')}
 						options={fontFamilyOptions}
 						title='Шрифт'
 					/>
 					<RadioGroup
-						selected={state.fontSizeOption}
+						selected={formOptions.fontSizeOption}
 						name='radio'
 						onChange={(options) => onChange(options, 'fontSizeOption')}
 						options={fontSizeOptions}
 						title='Размер шрифта'
 					/>
 					<Select
-						selected={state.fontColor}
+						selected={formOptions.fontColor}
 						onChange={(options) => onChange(options, 'fontColor')}
 						options={fontColors}
 						title='Цвет шрифта'
 					/>
 					<Separator />
 					<Select
-						selected={state.backgroundColor}
+						selected={formOptions.backgroundColor}
 						onChange={(options) => onChange(options, 'backgroundColor')}
 						options={backgroundColors}
 						title='Цвет фона'
 					/>
 					<Select
-						selected={state.contentWidth}
+						selected={formOptions.contentWidth}
 						onChange={(options) => onChange(options, 'contentWidth')}
 						options={contentWidthArr}
 						title='Ширина контента'
