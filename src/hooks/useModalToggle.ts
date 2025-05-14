@@ -23,7 +23,6 @@ export function useModalToggle(modalRef: RefObject<HTMLDivElement | null>) {
 		};
 
 		if (isOpen) {
-			console.log(111);
 			document.addEventListener('keydown', handleEsc);
 			document.addEventListener('mousedown', handleClickOutside);
 		}
